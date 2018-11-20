@@ -1,0 +1,42 @@
+data = load('data2017.mat');
+data = data.data;
+
+total_length = 0;
+m = length(data.shoe);
+
+array = {'shoe', 'drinking', 'brushing', 'writing'};
+
+pre_process = zeros(m,7);
+
+for i=1:4
+    total_length = total_length + length(getfield(data, array{i}));
+end
+
+total_length
+labels = zeros(1,total_length);
+labels(1:m) = 1
+
+for i
+for i=1:
+    
+    %Gravity
+    pre_process(i, 1) = mean(data.shoe(i).x);
+    pre_process(i, 2) = mean(data.shoe(i).y);
+    pre_process(i, 3) = mean(data.shoe(i).z);
+    
+    %Time domain
+    r = sqrt( (data.shoe(i).x).^2 + (data.shoe(i).y).^2 + (data.shoe(i).z).^2);
+    r = r - mean(r, 1);
+    
+    %Standard deviation
+    pre_process(i, 4) = std(r);
+    pre_process(i, 5) = skewness(r);
+    
+    %Frequency
+    [F25, F75] = energy25_75(r, 128);
+    pre_process(i, 6) = F25;
+    pre_process(i, 7) = F75;
+end
+
+pre_process
+
